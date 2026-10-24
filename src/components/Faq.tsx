@@ -8,9 +8,8 @@ interface FaqItem {
 }
 
 export const Faq: React.FC = () => {
-  // Allow multiple or single open items. Here we track open state per question.
   const [openItems, setOpenItems] = useState<{ [key: string]: boolean }>({
-    'faq-1': true, // Open the first item by default for immediate preview
+    'faq-1': true,
   });
 
   const toggleItem = (id: string) => {
@@ -96,23 +95,23 @@ export const Faq: React.FC = () => {
   return (
     <section 
       id="faq" 
-      className="py-24 bg-[#f8fafc] text-slate-800 border-t border-slate-200 tech-grid-light"
+      className="py-28 bg-[#0a0f1d] text-slate-100 border-t border-white/[0.08] relative"
       aria-labelledby="faq-heading"
     >
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
         <div className="text-center mb-16">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-200/80 border border-slate-300 text-xs font-semibold text-slate-700 uppercase tracking-wider mb-4">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-800/80 border border-white/[0.1] text-[11px] font-bold text-slate-300 uppercase tracking-widest mb-4">
             Common Inquiries
           </div>
           <h2 
             id="faq-heading" 
-            className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-4"
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-4"
           >
             Frequently Asked Questions
           </h2>
-          <p className="text-base text-slate-600 leading-relaxed max-w-2xl mx-auto">
+          <p className="text-base text-slate-300 leading-relaxed max-w-2xl mx-auto">
             Clear, honest answers regarding FixProof’s verification methodology, safety controls and commercial pilot programme.
           </p>
         </div>
@@ -127,7 +126,7 @@ export const Faq: React.FC = () => {
             return (
               <div 
                 key={item.id}
-                className="rounded-xl border border-slate-200 bg-white shadow-sm overflow-hidden transition-colors"
+                className="rounded-2xl border border-white/[0.08] bg-slate-900/80 shadow-lg overflow-hidden transition-all hover:border-white/[0.15]"
               >
                 <h3>
                   <button
@@ -136,17 +135,17 @@ export const Faq: React.FC = () => {
                     aria-expanded={isOpen}
                     aria-controls={panelId}
                     onClick={() => toggleItem(item.id)}
-                    className="w-full py-4 px-6 text-left flex items-center justify-between gap-4 text-slate-900 hover:text-teal-700 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-500 transition-colors"
+                    className="w-full py-4.5 px-6 text-left flex items-center justify-between gap-4 text-white hover:text-teal-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 transition-colors"
                   >
-                    <span className="font-bold text-sm sm:text-base flex items-center gap-3">
-                      <span className="text-xs font-mono text-slate-400 shrink-0">
+                    <span className="font-bold text-sm sm:text-base flex items-center gap-3.5">
+                      <span className="text-xs font-mono text-teal-400/80 shrink-0">
                         {String(index + 1).padStart(2, '0')}.
                       </span>
                       <span>{item.question}</span>
                     </span>
                     <span 
-                      className={`w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-slate-500 shrink-0 transition-transform duration-200 ${
-                        isOpen ? 'rotate-180 bg-teal-50 text-teal-600' : ''
+                      className={`w-8 h-8 rounded-xl bg-white/[0.04] border border-white/[0.08] flex items-center justify-center text-slate-400 shrink-0 transition-transform duration-200 ${
+                        isOpen ? 'rotate-180 bg-teal-500/15 border-teal-500/30 text-teal-300' : ''
                       }`}
                       aria-hidden="true"
                     >
@@ -160,11 +159,11 @@ export const Faq: React.FC = () => {
                   role="region"
                   aria-labelledby={buttonId}
                   hidden={!isOpen}
-                  className={`px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-600 leading-relaxed border-t border-slate-100 ${
+                  className={`px-6 pb-5 pt-1 text-xs sm:text-sm text-slate-300 leading-relaxed border-t border-white/[0.06] ${
                     !isOpen ? 'hidden' : 'block'
                   }`}
                 >
-                  <p className="pl-7">{item.answer}</p>
+                  <p className="pl-8 pt-2">{item.answer}</p>
                 </div>
               </div>
             );
@@ -172,10 +171,10 @@ export const Faq: React.FC = () => {
         </div>
 
         {/* Accordion helper note */}
-        <div className="mt-10 text-center">
-          <p className="text-xs text-slate-500">
+        <div className="mt-12 text-center">
+          <p className="text-xs text-slate-400">
             Have a specific pilot requirement or scanner format to discuss? Use the{' '}
-            <a href="#request-pilot" className="text-teal-700 font-semibold underline hover:text-teal-800">
+            <a href="#request-pilot" className="text-teal-400 font-semibold underline hover:text-teal-300">
               pilot request form
             </a>{' '}
             above.

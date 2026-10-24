@@ -51,23 +51,23 @@ export const HowItWorks: React.FC = () => {
   return (
     <section 
       id="how-it-works" 
-      className="py-24 bg-[#f8fafc] text-slate-800 border-b border-slate-200 tech-grid-light"
+      className="py-28 bg-[#0a0f1d] text-slate-100 border-b border-white/[0.08] relative"
       aria-labelledby="how-it-works-heading"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="max-w-3xl mx-auto text-center mb-12">
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-slate-200/80 border border-slate-300 text-xs font-semibold text-slate-700 uppercase tracking-wider mb-4">
+        <div className="max-w-3xl mx-auto text-center mb-16">
+          <div className="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-slate-800/80 border border-white/[0.1] text-[11px] font-bold text-slate-300 uppercase tracking-widest mb-4">
             Operating Methodology
           </div>
           <h2 
             id="how-it-works-heading" 
-            className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-6"
+            className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white tracking-tight leading-tight mb-6"
           >
             How FixProof verifies and documents your fixes.
           </h2>
-          <p className="text-base sm:text-lg text-slate-600 leading-relaxed">
+          <p className="text-base sm:text-lg text-slate-300 leading-relaxed font-normal">
             A structured five-step lifecycle ensuring safe retesting, defensible evidence generation 
             and continuous regression vigilance.
           </p>
@@ -75,18 +75,18 @@ export const HowItWorks: React.FC = () => {
 
         {/* Essential Prerequisite Callout */}
         <div className="max-w-4xl mx-auto mb-16">
-          <div className="p-6 rounded-xl bg-amber-50/80 border border-amber-300/80 shadow-sm flex flex-col sm:flex-row items-start sm:items-center gap-4">
-            <div className="w-12 h-12 rounded-lg bg-amber-100 border border-amber-300 flex items-center justify-center text-amber-800 shrink-0">
+          <div className="p-6 sm:p-7 rounded-2xl bg-amber-500/[0.08] border border-amber-500/30 shadow-xl flex flex-col sm:flex-row items-start sm:items-center gap-5">
+            <div className="w-12 h-12 rounded-xl bg-amber-500/20 border border-amber-500/30 flex items-center justify-center text-amber-400 shrink-0">
               <FileSignature className="w-6 h-6" aria-hidden="true" />
             </div>
             <div>
-              <div className="inline-block text-[11px] font-bold uppercase tracking-wider text-amber-900 bg-amber-200/80 px-2 py-0.5 rounded mb-1">
+              <div className="inline-block text-[11px] font-bold uppercase tracking-widest text-amber-300 bg-amber-500/20 px-2.5 py-0.5 rounded mb-1.5 border border-amber-500/30">
                 Mandatory Prerequisite
               </div>
-              <h3 className="text-base font-bold text-slate-900 mb-1">
+              <h3 className="text-base sm:text-lg font-bold text-white mb-1">
                 Agree authority and scope before any retesting.
               </h3>
-              <p className="text-xs sm:text-sm text-slate-700 leading-relaxed">
+              <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
                 Prior to executing any network probe or check, FixProof mandates formal signed authority, 
                 explicitly allow-listed IP/domain targets and mutually agreed testing windows with strict rate limits.
               </p>
@@ -98,7 +98,7 @@ export const HowItWorks: React.FC = () => {
         <div className="relative">
           {/* Desktop Connecting Line */}
           <div 
-            className="hidden lg:block absolute top-1/2 left-0 right-0 h-0.5 bg-slate-300 -translate-y-8 z-0" 
+            className="hidden lg:block absolute top-1/2 left-0 right-0 h-px bg-white/[0.1] -translate-y-10 z-0" 
             aria-hidden="true" 
           />
 
@@ -108,33 +108,33 @@ export const HowItWorks: React.FC = () => {
               return (
                 <div 
                   key={step.number}
-                  className="bg-white rounded-xl p-6 border border-slate-200 shadow-sm hover:shadow-md transition-all flex flex-col justify-between"
+                  className="bg-gradient-to-b from-slate-900/90 to-slate-950/90 rounded-2xl p-6 border border-white/[0.08] shadow-xl hover:border-teal-500/40 transition-all flex flex-col justify-between"
                 >
                   <div>
                     {/* Step badge & icon */}
-                    <div className="flex items-center justify-between mb-4">
-                      <span className="text-2xl font-black text-teal-600 tracking-tight">
+                    <div className="flex items-center justify-between mb-5">
+                      <span className="text-2xl font-black text-teal-400 tracking-tight">
                         {step.number}
                       </span>
-                      <div className="w-9 h-9 rounded-lg bg-teal-50 border border-teal-200 flex items-center justify-center text-teal-700">
-                        <Icon className="w-4 h-4" aria-hidden="true" />
+                      <div className="w-10 h-10 rounded-xl bg-teal-500/10 border border-teal-500/25 flex items-center justify-center text-teal-400">
+                        <Icon className="w-5 h-5" aria-hidden="true" />
                       </div>
                     </div>
 
-                    <h3 className="text-lg font-bold text-slate-900 mb-1">
+                    <h3 className="text-lg font-bold text-white mb-1">
                       {step.title}
                     </h3>
-                    <div className="text-xs font-semibold text-teal-700 mb-3">
+                    <div className="text-xs font-semibold text-teal-300 mb-3">
                       {step.subtitle}
                     </div>
-                    <p className="text-xs text-slate-600 leading-relaxed">
+                    <p className="text-xs text-slate-300 leading-relaxed">
                       {step.description}
                     </p>
                   </div>
 
-                  <div className="mt-5 pt-3 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-500 font-mono">
+                  <div className="mt-6 pt-3.5 border-t border-white/[0.08] flex items-center justify-between text-[11px] text-slate-400 font-mono">
                     <span>STAGE {step.number}</span>
-                    <CheckCircle2 className="w-3.5 h-3.5 text-teal-600" aria-hidden="true" />
+                    <CheckCircle2 className="w-3.5 h-3.5 text-teal-400" aria-hidden="true" />
                   </div>
                 </div>
               );

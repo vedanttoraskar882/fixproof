@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, ShieldCheck } from 'lucide-react';
+import { Menu, X, ArrowUpRight } from 'lucide-react';
 
 interface HeaderProps {
   activeSection: string;
@@ -53,7 +53,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection }) => {
       {/* Skip to main content */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-teal-600 focus:text-white focus:rounded-md focus:shadow-lg focus:outline-none focus:ring-2 focus:ring-teal-300"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-teal-500 focus:text-slate-950 focus:font-semibold focus:rounded-md focus:shadow-xl focus:outline-none focus:ring-2 focus:ring-teal-300"
       >
         Skip to main content
       </a>
@@ -61,57 +61,51 @@ export const Header: React.FC<HeaderProps> = ({ activeSection }) => {
       <header
         className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
           isScrolled
-            ? 'py-3 bg-[#080d1a]/95 backdrop-blur-md border-b border-slate-800 shadow-xl'
-            : 'py-5 bg-[#080d1a]/80 backdrop-blur-sm border-b border-slate-800/60'
+            ? 'py-3.5 bg-[#070b14]/90 backdrop-blur-md border-b border-white/[0.08] shadow-2xl'
+            : 'py-5 bg-transparent border-b border-transparent'
         }`}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            {/* Wordmark */}
+            {/* Pure Wordmark - NO logo icon next to FixProof */}
             <a
               href="#home"
-              className="flex items-center gap-2.5 text-white group focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 rounded-md py-1 px-1.5"
+              className="flex items-center text-white group focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400 rounded-md py-1"
               aria-label="FixProof Home"
             >
-              <div className="w-8 h-8 rounded-lg bg-teal-500/10 border border-teal-500/30 flex items-center justify-center text-teal-400 group-hover:bg-teal-500/20 group-hover:border-teal-400/50 transition-colors">
-                <ShieldCheck className="w-5 h-5 text-teal-400" aria-hidden="true" />
-              </div>
-              <div className="flex items-baseline">
-                <span className="font-extrabold text-xl tracking-tight text-white">Fix</span>
-                <span className="font-extrabold text-xl tracking-tight text-teal-400">Proof</span>
-              </div>
+              <span className="font-extrabold text-2xl tracking-tight text-white transition-opacity group-hover:opacity-95">
+                Fix<span className="text-teal-400">Proof</span>
+              </span>
             </a>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center gap-1 xl:gap-2" aria-label="Main Navigation">
+            <nav className="hidden lg:flex items-center gap-1 xl:gap-2 px-3 py-1.5 rounded-full bg-slate-900/60 border border-white/[0.06] backdrop-blur-md shadow-inner" aria-label="Main Navigation">
               {navLinks.map((link) => {
                 const isActive = activeSection === link.href.substring(1);
                 return (
                   <a
                     key={link.href}
                     href={link.href}
-                    className={`px-3 py-1.5 text-sm font-medium rounded-md transition-colors relative ${
+                    className={`px-3.5 py-1.5 text-xs font-semibold rounded-full transition-all duration-200 ${
                       isActive
-                        ? 'text-teal-300 bg-teal-950/40'
-                        : 'text-slate-300 hover:text-white hover:bg-slate-800/50'
+                        ? 'text-teal-300 bg-teal-500/15 border border-teal-500/30 shadow-sm'
+                        : 'text-slate-300 hover:text-white hover:bg-white/[0.05]'
                     }`}
                   >
                     {link.label}
-                    {isActive && (
-                      <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-teal-400 rounded-full" />
-                    )}
                   </a>
                 );
               })}
             </nav>
 
             {/* Primary Action Button */}
-            <div className="hidden lg:flex items-center">
+            <div className="hidden lg:flex items-center gap-3">
               <a
                 href="#request-pilot"
-                className="inline-flex items-center justify-center px-4 py-2 text-sm font-semibold rounded-lg bg-teal-500 text-slate-950 hover:bg-teal-400 active:bg-teal-600 transition-all shadow-sm hover:shadow-teal-500/20 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-300"
+                className="inline-flex items-center justify-center gap-1.5 px-4.5 py-2 text-xs font-bold uppercase tracking-wider rounded-lg bg-teal-400 text-slate-950 hover:bg-teal-300 active:bg-teal-500 transition-all shadow-md hover:shadow-teal-400/20 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-300"
               >
-                Request a Pilot
+                <span>Request a Pilot</span>
+                <ArrowUpRight className="w-3.5 h-3.5" aria-hidden="true" />
               </a>
             </div>
 
@@ -123,12 +117,12 @@ export const Header: React.FC<HeaderProps> = ({ activeSection }) => {
                 aria-expanded={mobileMenuOpen}
                 aria-controls="mobile-nav"
                 aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
-                className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400"
+                className="p-2.5 rounded-lg text-slate-300 hover:text-white hover:bg-slate-800/80 border border-white/[0.08] focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-400"
               >
                 {mobileMenuOpen ? (
-                  <X className="w-6 h-6" aria-hidden="true" />
+                  <X className="w-5 h-5" aria-hidden="true" />
                 ) : (
-                  <Menu className="w-6 h-6" aria-hidden="true" />
+                  <Menu className="w-5 h-5" aria-hidden="true" />
                 )}
               </button>
             </div>
@@ -139,7 +133,7 @@ export const Header: React.FC<HeaderProps> = ({ activeSection }) => {
         {mobileMenuOpen && (
           <div
             id="mobile-nav"
-            className="lg:hidden fixed inset-x-0 top-[65px] bottom-0 bg-[#080d1a]/98 backdrop-blur-xl border-b border-slate-800 overflow-y-auto px-6 py-6 flex flex-col justify-between"
+            className="lg:hidden fixed inset-x-0 top-[65px] bottom-0 bg-[#070b14]/98 backdrop-blur-2xl border-b border-white/[0.08] overflow-y-auto px-6 py-8 flex flex-col justify-between"
           >
             <div className="space-y-2">
               {navLinks.map((link) => {
@@ -149,10 +143,10 @@ export const Header: React.FC<HeaderProps> = ({ activeSection }) => {
                     key={link.href}
                     href={link.href}
                     onClick={() => setMobileMenuOpen(false)}
-                    className={`block px-4 py-3 rounded-lg text-base font-medium transition-colors ${
+                    className={`block px-4 py-3.5 rounded-xl text-base font-semibold transition-all ${
                       isActive
-                        ? 'bg-teal-950/60 text-teal-300 border-l-4 border-teal-400'
-                        : 'text-slate-200 hover:bg-slate-800/80 hover:text-white'
+                        ? 'bg-teal-500/15 text-teal-300 border border-teal-500/30'
+                        : 'text-slate-200 hover:bg-slate-800/70 hover:text-white'
                     }`}
                   >
                     {link.label}
@@ -160,13 +154,14 @@ export const Header: React.FC<HeaderProps> = ({ activeSection }) => {
                 );
               })}
             </div>
-            <div className="pt-6 pb-8 border-t border-slate-800 mt-6">
+            <div className="pt-6 pb-6 border-t border-slate-800/80 mt-6">
               <a
                 href="#request-pilot"
                 onClick={() => setMobileMenuOpen(false)}
-                className="w-full flex items-center justify-center px-5 py-3 text-base font-semibold rounded-lg bg-teal-500 text-slate-950 hover:bg-teal-400 transition-colors shadow-md"
+                className="w-full flex items-center justify-center gap-2 px-5 py-3.5 text-sm font-bold uppercase tracking-wider rounded-xl bg-teal-400 text-slate-950 hover:bg-teal-300 transition-all shadow-lg"
               >
-                Request a Pilot
+                <span>Request a Pilot</span>
+                <ArrowUpRight className="w-4 h-4" aria-hidden="true" />
               </a>
             </div>
           </div>

@@ -42,16 +42,16 @@ export const PilotForm: React.FC<PilotFormProps> = ({ selectedPlan }) => {
       errs.fullName = 'Please enter a valid full name.';
     }
 
-    if (!phoneNumber.trim()) {
-      errs.phoneNumber = 'Phone Number is required.';
-    } else if (!/^[0-9+\s().-]{7,20}$/.test(phoneNumber.trim())) {
-      errs.phoneNumber = 'Please enter a valid UK or international telephone number.';
-    }
-
     if (!emailAddress.trim()) {
       errs.emailAddress = 'Email Address is required.';
     } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailAddress.trim())) {
       errs.emailAddress = 'Please enter a valid email address.';
+    }
+
+    if (!phoneNumber.trim()) {
+      errs.phoneNumber = 'Phone Number is required.';
+    } else if (!/^[0-9+\s().-]{7,20}$/.test(phoneNumber.trim())) {
+      errs.phoneNumber = 'Please enter a valid telephone number.';
     }
 
     if (!organisationName.trim()) {
@@ -75,7 +75,6 @@ export const PilotForm: React.FC<PilotFormProps> = ({ selectedPlan }) => {
     setIsSaving(true);
 
     try {
-      // 1. Verify localStorage accessibility
       if (typeof window === 'undefined' || !window.localStorage) {
         throw new Error('Browser localStorage is not available on this device.');
       }
@@ -84,12 +83,10 @@ export const PilotForm: React.FC<PilotFormProps> = ({ selectedPlan }) => {
       const existingRaw = localStorage.getItem(storageKey);
       let records: PilotRecord[] = [];
 
-      // 2. Parse existing data safely
       if (existingRaw !== null) {
         try {
           const parsed = JSON.parse(existingRaw);
           if (!Array.isArray(parsed)) {
-            // Malformed data exists; do NOT overwrite!
             setStatusMessage({
               type: 'error',
               text: 'Unable to save request: existing browser storage contains non-array data. FixProof will not overwrite existing records.'
@@ -99,7 +96,6 @@ export const PilotForm: React.FC<PilotFormProps> = ({ selectedPlan }) => {
           }
           records = parsed;
         } catch (parseErr) {
-          // JSON parse failed; do NOT overwrite!
           setStatusMessage({
             type: 'error',
             text: 'Unable to save request: existing stored data is corrupted. FixProof has protected existing data and aborted save.'
@@ -109,8 +105,6 @@ export const PilotForm: React.FC<PilotFormProps> = ({ selectedPlan }) => {
         }
       }
 
-      // 3. Construct new record
-      // Using standard crypto.randomUUID() with fallback
       const generateId = () => {
         if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
           return crypto.randomUUID();
@@ -131,13 +125,9 @@ export const PilotForm: React.FC<PilotFormProps> = ({ selectedPlan }) => {
         newRecord.selectedPlan = planInterest.trim();
       }
 
-      // 4. Append without overwriting
       records.push(newRecord);
-
-      // 5. Save to localStorage
       localStorage.setItem(storageKey, JSON.stringify(records));
 
-      // 6. Reset form only on success
       setFullName('');
       setPhoneNumber('');
       setEmailAddress('');
@@ -145,7 +135,6 @@ export const PilotForm: React.FC<PilotFormProps> = ({ selectedPlan }) => {
       setPlanInterest('');
       setErrors({});
 
-      // 7. Exact success message required
       setStatusMessage({
         type: 'success',
         text: 'Your pilot request has been saved on this browser. It has not been sent to FixProof.'
@@ -164,58 +153,58 @@ export const PilotForm: React.FC<PilotFormProps> = ({ selectedPlan }) => {
   return (
     <div 
       id="request-pilot" 
-      className="rounded-2xl bg-slate-900 border border-slate-800 text-white p-6 sm:p-10 shadow-2xl relative overflow-hidden"
+      className="rounded-3xl bg-gradient-to-b from-slate-900 via-[#0c1220] to-slate-900 border border-white/[0.1] text-white p-6 sm:p-10 md:p-12 shadow-2xl relative overflow-hidden"
     >
-      {/* Subtle background decoration */}
+      {/* Decorative gradient glow */}
       <div 
-        className="absolute -top-24 -right-24 w-80 h-80 bg-teal-500/10 blur-3xl pointer-events-none rounded-full" 
+        className="absolute top-0 right-0 w-96 h-96 bg-[radial-gradient(circle,rgba(20,184,166,0.12),transparent_70%)] pointer-events-none" 
         aria-hidden="true" 
       />
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-start relative z-10">
         
-        {/* Left Column: Context & Disclaimers */}
+        {/* Left Column: Context & Safeguards */}
         <div className="lg:col-span-5">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-teal-500/10 border border-teal-500/30 text-xs font-semibold text-teal-300 uppercase tracking-wider mb-4">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/25 text-[11px] font-bold text-teal-300 uppercase tracking-widest mb-4">
             Pilot Application
           </div>
-          <h3 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight mb-4">
+          <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight mb-4">
             Request a FixProof pilot
           </h3>
-          <p className="text-sm text-slate-300 leading-relaxed mb-6">
+          <p className="text-sm text-slate-300 leading-relaxed mb-8">
             Tell us about your organisation and interest in independent remediation verification.
           </p>
 
-          <div className="space-y-4 text-xs text-slate-400">
-            <div className="p-3.5 rounded-lg bg-slate-950/70 border border-slate-800 flex items-start gap-3">
+          <div className="space-y-4 text-xs text-slate-300">
+            <div className="p-4 rounded-xl bg-black/40 border border-white/[0.06] flex items-start gap-3.5">
               <ShieldCheck className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" aria-hidden="true" />
-              <span>
-                <strong>Controlled Scope:</strong> Pilots run under strict non-destructive rules of engagement, 
-                signed authority and agreed testing windows.
+              <span className="leading-relaxed">
+                <strong className="text-white block mb-0.5">Controlled Scope:</strong>
+                Pilots run under strict non-destructive rules of engagement, signed authority and agreed testing windows.
               </span>
             </div>
 
-            <div className="p-3.5 rounded-lg bg-slate-950/70 border border-slate-800 flex items-start gap-3">
+            <div className="p-4 rounded-xl bg-black/40 border border-white/[0.06] flex items-start gap-3.5">
               <Lock className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" aria-hidden="true" />
-              <span>
-                <strong>No Credentials or Exploits:</strong> FixProof never asks for passwords, payment details 
-                or raw vulnerability reports on this public landing page.
+              <span className="leading-relaxed">
+                <strong className="text-white block mb-0.5">No Credentials or Exploits:</strong>
+                FixProof never asks for passwords, payment details or raw vulnerability reports on this public landing page.
               </span>
             </div>
 
-            <div className="p-3.5 rounded-lg bg-slate-950/70 border border-slate-800 flex items-start gap-3">
+            <div className="p-4 rounded-xl bg-black/40 border border-white/[0.06] flex items-start gap-3.5">
               <Info className="w-4 h-4 text-teal-400 shrink-0 mt-0.5" aria-hidden="true" />
-              <span>
-                <strong>Diagnostic Credit:</strong> Participating pilot diagnostics (£750 subject to selection) 
-                are credited against first-year subscription when you subscribe within 60 days.
+              <span className="leading-relaxed">
+                <strong className="text-white block mb-0.5">Diagnostic Credit:</strong>
+                Participating pilot diagnostics (£750 subject to selection) are credited against first-year subscription when you subscribe within 60 days.
               </span>
             </div>
           </div>
         </div>
 
-        {/* Right Column: Form */}
-        <div className="lg:col-span-7 bg-slate-950/80 p-6 sm:p-8 rounded-xl border border-slate-800 shadow-inner">
-          <form onSubmit={handleSubmit} noValidate className="space-y-4">
+        {/* Right Column: Form (Clean, without pre-entered data, and without browser storage notice sentence) */}
+        <div className="lg:col-span-7 bg-slate-950/90 p-6 sm:p-8 rounded-2xl border border-white/[0.08] shadow-2xl">
+          <form onSubmit={handleSubmit} noValidate className="space-y-5">
             
             {/* Full Name */}
             <div>
@@ -232,20 +221,19 @@ export const PilotForm: React.FC<PilotFormProps> = ({ selectedPlan }) => {
                   setFullName(e.target.value);
                   if (errors.fullName) setErrors({ ...errors, fullName: '' });
                 }}
-                placeholder="e.g. Sarah Jenkins"
-                className={`w-full px-3.5 py-2.5 rounded-lg bg-slate-900 border text-sm text-white placeholder-slate-500 focus:outline-none transition-colors ${
+                className={`w-full px-4 py-3 rounded-xl bg-slate-900 border text-sm text-white focus:outline-none transition-colors ${
                   errors.fullName 
                     ? 'border-rose-500 focus:border-rose-400' 
-                    : 'border-slate-700 focus:border-teal-400'
+                    : 'border-white/[0.1] focus:border-teal-400'
                 }`}
                 aria-invalid={errors.fullName ? 'true' : 'false'}
                 aria-describedby={errors.fullName ? 'fullName-error' : undefined}
                 required
               />
               {errors.fullName && (
-                <p id="fullName-error" className="mt-1 text-xs text-rose-400 flex items-center gap-1" role="alert">
-                  <AlertCircle className="w-3.5 h-3.5" aria-hidden="true" />
-                  {errors.fullName}
+                <p id="fullName-error" className="mt-1.5 text-xs text-rose-400 flex items-center gap-1.5" role="alert">
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                  <span>{errors.fullName}</span>
                 </p>
               )}
             </div>
@@ -265,20 +253,19 @@ export const PilotForm: React.FC<PilotFormProps> = ({ selectedPlan }) => {
                   setEmailAddress(e.target.value);
                   if (errors.emailAddress) setErrors({ ...errors, emailAddress: '' });
                 }}
-                placeholder="s.jenkins@organisation.co.uk"
-                className={`w-full px-3.5 py-2.5 rounded-lg bg-slate-900 border text-sm text-white placeholder-slate-500 focus:outline-none transition-colors ${
+                className={`w-full px-4 py-3 rounded-xl bg-slate-900 border text-sm text-white focus:outline-none transition-colors ${
                   errors.emailAddress 
                     ? 'border-rose-500 focus:border-rose-400' 
-                    : 'border-slate-700 focus:border-teal-400'
+                    : 'border-white/[0.1] focus:border-teal-400'
                 }`}
                 aria-invalid={errors.emailAddress ? 'true' : 'false'}
                 aria-describedby={errors.emailAddress ? 'emailAddress-error' : undefined}
                 required
               />
               {errors.emailAddress && (
-                <p id="emailAddress-error" className="mt-1 text-xs text-rose-400 flex items-center gap-1" role="alert">
-                  <AlertCircle className="w-3.5 h-3.5" aria-hidden="true" />
-                  {errors.emailAddress}
+                <p id="emailAddress-error" className="mt-1.5 text-xs text-rose-400 flex items-center gap-1.5" role="alert">
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                  <span>{errors.emailAddress}</span>
                 </p>
               )}
             </div>
@@ -298,20 +285,19 @@ export const PilotForm: React.FC<PilotFormProps> = ({ selectedPlan }) => {
                   setPhoneNumber(e.target.value);
                   if (errors.phoneNumber) setErrors({ ...errors, phoneNumber: '' });
                 }}
-                placeholder="+44 20 7946 0991"
-                className={`w-full px-3.5 py-2.5 rounded-lg bg-slate-900 border text-sm text-white placeholder-slate-500 focus:outline-none transition-colors ${
+                className={`w-full px-4 py-3 rounded-xl bg-slate-900 border text-sm text-white focus:outline-none transition-colors ${
                   errors.phoneNumber 
                     ? 'border-rose-500 focus:border-rose-400' 
-                    : 'border-slate-700 focus:border-teal-400'
+                    : 'border-white/[0.1] focus:border-teal-400'
                 }`}
                 aria-invalid={errors.phoneNumber ? 'true' : 'false'}
                 aria-describedby={errors.phoneNumber ? 'phoneNumber-error' : undefined}
                 required
               />
               {errors.phoneNumber && (
-                <p id="phoneNumber-error" className="mt-1 text-xs text-rose-400 flex items-center gap-1" role="alert">
-                  <AlertCircle className="w-3.5 h-3.5" aria-hidden="true" />
-                  {errors.phoneNumber}
+                <p id="phoneNumber-error" className="mt-1.5 text-xs text-rose-400 flex items-center gap-1.5" role="alert">
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                  <span>{errors.phoneNumber}</span>
                 </p>
               )}
             </div>
@@ -331,27 +317,26 @@ export const PilotForm: React.FC<PilotFormProps> = ({ selectedPlan }) => {
                   setOrganisationName(e.target.value);
                   if (errors.organisationName) setErrors({ ...errors, organisationName: '' });
                 }}
-                placeholder="Apex Logistics Ltd / North Shield MSP"
-                className={`w-full px-3.5 py-2.5 rounded-lg bg-slate-900 border text-sm text-white placeholder-slate-500 focus:outline-none transition-colors ${
+                className={`w-full px-4 py-3 rounded-xl bg-slate-900 border text-sm text-white focus:outline-none transition-colors ${
                   errors.organisationName 
                     ? 'border-rose-500 focus:border-rose-400' 
-                    : 'border-slate-700 focus:border-teal-400'
+                    : 'border-white/[0.1] focus:border-teal-400'
                 }`}
                 aria-invalid={errors.organisationName ? 'true' : 'false'}
                 aria-describedby={errors.organisationName ? 'organisationName-error' : undefined}
                 required
               />
               {errors.organisationName && (
-                <p id="organisationName-error" className="mt-1 text-xs text-rose-400 flex items-center gap-1" role="alert">
-                  <AlertCircle className="w-3.5 h-3.5" aria-hidden="true" />
-                  {errors.organisationName}
+                <p id="organisationName-error" className="mt-1.5 text-xs text-rose-400 flex items-center gap-1.5" role="alert">
+                  <AlertCircle className="w-3.5 h-3.5 shrink-0" aria-hidden="true" />
+                  <span>{errors.organisationName}</span>
                 </p>
               )}
             </div>
 
-            {/* Optional Plan Interest (Pre-selected from Pricing button) */}
+            {/* Optional Plan Interest Reference */}
             {planInterest && (
-              <div className="p-2.5 rounded-lg bg-teal-950/40 border border-teal-500/30 flex items-center justify-between text-xs">
+              <div className="p-3 rounded-xl bg-teal-500/10 border border-teal-500/30 flex items-center justify-between text-xs">
                 <span className="text-teal-300">
                   Referenced plan: <strong>{planInterest}</strong>
                 </span>
@@ -365,28 +350,21 @@ export const PilotForm: React.FC<PilotFormProps> = ({ selectedPlan }) => {
               </div>
             )}
 
-            {/* Browser Storage Notice (Required placement near submit button) */}
-            <div className="pt-2">
-              <p className="text-xs text-slate-400 leading-normal">
-                This form saves your details on this browser only. It does not send them to FixProof.
-              </p>
-            </div>
-
             {/* Submit Button */}
-            <div>
+            <div className="pt-2">
               <button
                 type="submit"
                 disabled={isSaving}
-                className="w-full inline-flex items-center justify-center px-6 py-3.5 text-sm font-semibold rounded-lg bg-teal-500 text-slate-950 hover:bg-teal-400 active:bg-teal-600 disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-300"
+                className="w-full inline-flex items-center justify-center px-6 py-4 text-sm font-bold uppercase tracking-wider rounded-xl bg-teal-400 text-slate-950 hover:bg-teal-300 active:bg-teal-500 disabled:opacity-60 disabled:cursor-not-allowed transition-all shadow-lg shadow-teal-400/20 hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-teal-300"
               >
-                {isSaving ? 'Saving to browser...' : 'Save Pilot Request'}
+                {isSaving ? 'Saving...' : 'Save Pilot Request'}
               </button>
             </div>
 
             {/* Feedback Alerts */}
             {statusMessage && (
               <div
-                className={`p-3.5 rounded-lg text-xs leading-relaxed flex items-start gap-2.5 ${
+                className={`p-4 rounded-xl text-xs leading-relaxed flex items-start gap-3 ${
                   statusMessage.type === 'success'
                     ? 'bg-emerald-950/80 border border-emerald-500/40 text-emerald-200'
                     : 'bg-rose-950/80 border border-rose-500/40 text-rose-200'
